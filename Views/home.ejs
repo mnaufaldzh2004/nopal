@@ -4,9 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7ff; /* Biru muda */
+            color: #064789; /* Biru tua untuk kontras */
+            text-align: center;
+            padding: 20px;
+        }
+        h2, h3 {
+            color: #0277bd; /* Biru lebih gelap */
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #2196f3;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            background-color: #2196f3;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #1976d2;
+        }
+        #weather-info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            display: inline-block;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    <script>
+        async function getWeather() {
+            const city = document.getElementById('city').value || 'Jakarta'; // Default ke Jakarta jika kosong
+            try {
+                const response = await fetch(`/weather?city=${city}`);
+                const data = await response.json();
+                
+                document.getElementById('weather-info').innerHTML = `
+                    <h3>Cuaca di ${data.city}:</h3>
+                    <p>Suhu: ${data.temperature}°C</p>
+                    <p>Cuaca: ${data.description}</p>
+                    <img src="https://openweathermap.org/img/wn/${data.icon}.png" alt="Weather Icon">
+                `;
+            } catch (error) {
+                console.error('Gagal mengambil data cuaca:', error);
+                document.getElementById('weather-info').innerHTML = "<p>Gagal mengambil data cuaca</p>";
+            }
+        }
+    </script>
 </head>
 <body>
     <h2>Selamat datang, <%= user.username %>!</h2>
     <a href="/auth/logout">Logout</a>
+
+    <h3>Masukkan Kota:</h3>
+    <input type="text" id="city" placeholder="Masukkan kota">
+    <button onclick="getWeather()">Cari Cuaca</button>
+
+    <div id="weather-info">Mengambil data cuaca...</div>
 </body>
 </html>
