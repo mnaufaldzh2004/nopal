@@ -6,6 +6,7 @@ require('dotenv').config();
 const path = require('path');
 
 const app = express();
+const jwtSecret = process.env.JWT_SECRET_KEY;
 
 // Middleware
 app.use(express.json());
